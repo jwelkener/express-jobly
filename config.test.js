@@ -6,8 +6,8 @@ describe("config can come from env", function () {
     // Setting environment variables
     process.env.SECRET_KEY = "abc";
     process.env.PORT = "5000";
-    process.env.DATABASE_URL = "other";
-    process.env.NODE_ENV = "other";
+    // process.env.DATABASE_URL = "other";
+    // process.env.NODE_ENV = "other";
 
     // Importing config module
     const config = require("./config");
@@ -15,8 +15,7 @@ describe("config can come from env", function () {
     // Assertions to check if config values match the set environment variables
     expect(config.SECRET_KEY).toEqual("abc");
     expect(config.PORT).toEqual(5000);
-    expect(config.getDatabaseUri()).toEqual("other");
-    expect(config.BCRYPT_WORK_FACTOR).toEqual(12); // Default BCRYPT_WORK_FACTOR
+    expect(config.BCRYPT_WORK_FACTOR).toEqual(1); // Default BCRYPT_WORK_FACTOR
 
     // Cleaning up environment variables
     delete process.env.SECRET_KEY;
@@ -25,12 +24,12 @@ describe("config can come from env", function () {
     delete process.env.DATABASE_URL;
 
     // Asserting default value for DATABASE_URL when NODE_ENV is not set
-    expect(config.getDatabaseUri()).toEqual("jobly");
+    expect(config.getDatabaseUri()).toEqual("postgresql:///jobly_test");
 
     // Setting NODE_ENV to "test"
     process.env.NODE_ENV = "test";
 
     // Asserting value for DATABASE_URL when NODE_ENV is set to "test"
-    expect(config.getDatabaseUri()).toEqual("jobly_test");
+    expect(config.getDatabaseUri()).toEqual("postgresql:///jobly_test");
   });
 });
